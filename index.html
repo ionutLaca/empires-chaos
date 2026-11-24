@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Empires Chaos</title>
+  </head>
+  <body>
+    <section id="menu" class="screen">
+      <div class="menu-box">
+        <h1>Empires Chaos</h1>
+        <p class="subtitle">Patru imperii, patru colțuri, un singur supraviețuitor.</p>
+        <h2>Alege-ți civilizația</h2>
+        <div id="civ-cards" class="civ-cards"></div>
+        <button id="btn-start" class="primary" disabled>Începe jocul</button>
+        <p class="hint">
+          Unitățile tale apar automat în valuri și pornesc pe cele trei culoare: două pe margini și unul prin mijloc.
+          Distruge castelele celorlalte trei imperii ca să câștigi.
+        </p>
+      </div>
+    </section>
+
+    <section id="play" class="screen hidden">
+      <div id="game-container"></div>
+      <aside id="hud">
+        <h1>Empires Chaos</h1>
+        <div class="stats">
+          <div><span>Timp</span><b id="hud-time">0:00</b></div>
+          <div><span>Val</span><b id="hud-wave">0</b></div>
+          <div><span>Următorul val</span><b id="hud-next">-</b></div>
+        </div>
+        <p class="hint power">Forța armatelor (crește cu timpul): <b id="hud-power">+0%</b><br><span id="hud-glory-rule"></span></p>
+        <div id="hud-players"></div>
+        <div class="speed" role="group" aria-label="Viteza jocului">
+          <button data-speed="0" title="Space">Pauză</button>
+          <button data-speed="1" title="Tasta 1">1x</button>
+          <button data-speed="2" title="Tasta 2">2x</button>
+          <button data-speed="4" title="Tasta 3">4x</button>
+        </div>
+        <ul id="hud-log"></ul>
+        <button id="btn-menu">Meniu principal</button>
+        <p class="hint">Cerc = corp la corp, romb = atac de la distanță. Space = pauză, 1 / 2 / 3 = viteză.</p>
+      </aside>
+    </section>
+
+    <div id="overlay" class="hidden">
+      <div class="overlay-box">
+        <h2 id="overlay-title"></h2>
+        <p id="overlay-text"></p>
+        <div class="overlay-buttons">
+          <button id="btn-spectate">Continuă să privești</button>
+          <button id="btn-again" class="primary">Joc nou</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
