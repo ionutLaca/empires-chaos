@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CIVS, type CivId } from '../src/game/civs';
-import { SIM_DT } from '../src/game/config';
-import { CENTER_NODE, laneTargets, shortestPath } from '../src/game/map';
+import { MAP_MARGIN, SIM_DT, WORLD_SIZE } from '../src/game/config';
+import { CASTLE_POS, CENTER_NODE, LANE_EDGES, laneRoute, laneTargets, shortestPath } from '../src/game/map';
 import { Simulation } from '../src/game/sim';
 
 function runToEnd(civs: CivId[], seed: number, maxMinutes = 40): Simulation {
@@ -17,11 +17,33 @@ describe('harta', () => {
     expect(laneTargets(3)).toEqual([0, 2, 1]);
   });
 
-  it('vecinii sunt legați direct pe margine, baza opusă prin centru', () => {
-    expect(shortestPath(0, 1)).toEqual([0, 1]);
-    expect(shortestPath(3, 0)).toEqual([3, 0]);
-    expect(shortestPath(0, 2)).toEqual([0, CENTER_NODE, 2]);
-    expect(shortestPath(1, 3)).toEqual([1, CENTER_NODE, 3]);
+  it('vecinii sunt legați pe margine prin colțul dintre ei, baza opusă prin centru', () => {
+    // Colțurile sunt nodurile 4-7: colțul 4+k se află între baza k și baza k+1.
+    expect(laneRoute(0, 1)).toEqual([0, 4, 1]);
+    expect(laneRoute(0, 3)).toEqual([0, 7, 3]);
+    expect(laneRoute(2, 3)).toEqual([2, 6, 3]);
+    expect(laneRoute(0, 2)).toEqual([0, CENTER_NODE, 2]);
+    expect(laneRoute(3, 1)).toEqual([3, CENTER_NODE, 1]);
+  });
+
+  it('castelele sunt în cruce, la mijlocul laturilor', () => {
+    const mid = WORLD_SIZE / 2;
+    expect(CASTLE_POS.map((p) => [p.x, p.y])).toEqual([
+      [mid, MAP_MARGIN],
+      [WORLD_SIZE - MAP_MARGIN, mid],
+      [mid, WORLD_SIZE - MAP_MARGIN],
+      [MAP_MARGIN, mid],
+    ]);
+  });
+
+  it('cel mai scurt drum folosește doar culoarele existente', () => {
+    const path = shortestPath(0, 2);
+    expect(path[0]).toBe(0);
+    expect(path[path.length - 1]).toBe(2);
+    for (let i = 1; i < path.length; i++) {
+      const [a, b] = [path[i - 1], path[i]];
+      expect(LANE_EDGES.some(([x, y]) => (x === a && y === b) || (x === b && y === a))).toBe(true);
+    }
   });
 });
 

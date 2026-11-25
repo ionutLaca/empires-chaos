@@ -1,40 +1,51 @@
-import { CORNER_MARGIN, WORLD_SIZE } from './config';
+import { MAP_MARGIN, WORLD_SIZE } from './config';
 
 export interface Vec {
   x: number;
   y: number;
 }
 
-const M = CORNER_MARGIN;
-const F = WORLD_SIZE - CORNER_MARGIN;
+const M = MAP_MARGIN;
+const F = WORLD_SIZE - MAP_MARGIN;
+const MID = WORLD_SIZE / 2;
 
-/** Pozițiile castelelor, în sensul acelor de ceasornic: stânga-sus, dreapta-sus, dreapta-jos, stânga-jos. */
+/**
+ * Pozițiile castelelor, în cruce, la mijlocul fiecărei laturi,
+ * în sensul acelor de ceasornic: sus, dreapta, jos, stânga.
+ */
 export const CASTLE_POS: Vec[] = [
-  { x: M, y: M },
+  { x: MID, y: M },
+  { x: F, y: MID },
+  { x: MID, y: F },
+  { x: M, y: MID },
+];
+
+/** Colțurile hărții. Colțul k se află între baza k și baza k+1 (dreapta-sus, dreapta-jos, stânga-jos, stânga-sus). */
+export const CORNER_POS: Vec[] = [
   { x: F, y: M },
   { x: F, y: F },
   { x: M, y: F },
+  { x: M, y: M },
 ];
 
-export const CENTER: Vec = { x: WORLD_SIZE / 2, y: WORLD_SIZE / 2 };
-export const CENTER_NODE = 4;
+export const CENTER: Vec = { x: MID, y: MID };
 
-/** Nodurile grafului de culoare: cele 4 castele + centrul hărții. */
-export const NODES: Vec[] = [...CASTLE_POS, CENTER];
+const CORNER_NODE = (k: number) => 4 + k;
+export const CENTER_NODE = 8;
+
+/** Nodurile grafului de culoare: 4 castele (0-3), 4 colțuri (4-7), centrul (8). */
+export const NODES: Vec[] = [...CASTLE_POS, ...CORNER_POS, CENTER];
 
 /**
- * Culoarele: 4 pe margini (între castele vecine) și 4 spre centru (cele două diagonale).
- * Ca pe harta originală, fiecare bază trimite unități pe 3 culoare: două pe margini, unul prin mijloc.
+ * Culoarele, ca pe harta originală: un pătrat pe marginile hărții (de la fiecare castel spre cele
+ * două colțuri vecine) și o cruce prin mijloc (de la fiecare castel spre centru).
  */
 export const LANE_EDGES: [number, number][] = [
-  [0, 1],
-  [1, 2],
-  [2, 3],
-  [3, 0],
-  [0, CENTER_NODE],
-  [1, CENTER_NODE],
-  [2, CENTER_NODE],
-  [3, CENTER_NODE],
+  ...[0, 1, 2, 3].flatMap((k): [number, number][] => [
+    [k, CORNER_NODE(k)],
+    [CORNER_NODE(k), (k + 1) % 4],
+  ]),
+  ...[0, 1, 2, 3].map((k): [number, number] => [k, CENTER_NODE]),
 ];
 
 export function dist(a: Vec, b: Vec): number {
@@ -44,6 +55,17 @@ export function dist(a: Vec, b: Vec): number {
 /** Baza vizată de fiecare culoar al unei baze: vecinul din dreapta, vecinul din stânga, opusul (prin centru). */
 export function laneTargets(slot: number): number[] {
   return [(slot + 1) % 4, (slot + 3) % 4, (slot + 2) % 4];
+}
+
+/**
+ * Drumul fix al unui culoar, ca listă de noduri: spre vecini pe margine (prin colțul dintre ei),
+ * spre baza opusă prin centru.
+ */
+export function laneRoute(slot: number, target: number): number[] {
+  if (target === (slot + 1) % 4) return [slot, CORNER_NODE(slot), target];
+  if (target === (slot + 3) % 4) return [slot, CORNER_NODE(target), target];
+  if (target === (slot + 2) % 4) return [slot, CENTER_NODE, target];
+  throw new Error(`No lane from base ${slot} to base ${target}`);
 }
 
 /** Cel mai scurt drum (Dijkstra) între două noduri, ca listă de indici de noduri, inclusiv capetele. */

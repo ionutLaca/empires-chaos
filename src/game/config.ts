@@ -1,7 +1,8 @@
 // Constante globale ale jocului. Toate distanțele sunt în unități de lume (pixeli la zoom 1).
 
 export const WORLD_SIZE = 1200;
-export const CORNER_MARGIN = 130;
+/** Distanța de la marginea lumii până la culoarele de pe margini (și până la castele). */
+export const MAP_MARGIN = 130;
 export const LANE_WIDTH = 64;
 
 /** Pasul fix al simulării (secunde). Simularea rulează la 30 de pași pe secundă, indiferent de FPS. */
@@ -12,7 +13,7 @@ export const FIRST_WAVE_DELAY = 3;
 export const WAVE_INTERVAL = 18;
 
 export const CASTLE = {
-  hp: 2500,
+  hp: 3000,
   armor: 4,
   radius: 38,
   damage: 30,
@@ -25,8 +26,8 @@ export const PROJECTILE_SPEED = 420;
 /** Unitățile fac daune duble clădirilor, ca atacurile care ajung la castel să conteze. */
 export const BUILDING_DAMAGE_MULT = 2;
 
-/** Poziția jucătorului uman: 0 = stânga-sus, 1 = dreapta-sus, 2 = dreapta-jos, 3 = stânga-jos. */
-export const HUMAN_SLOT = 3;
+/** Poziția jucătorului uman: 0 = sus, 1 = dreapta, 2 = jos, 3 = stânga. */
+export const HUMAN_SLOT = 2;
 
 /** Câte unități pe culoar are un val, în funcție de numărul valului (0, 1, 2, ...). */
 export function waveComposition(wave: number): { melee: number; ranged: number } {
@@ -41,7 +42,7 @@ export function waveComposition(wave: number): { melee: number; ranged: number }
  * Astfel apărarea cedează treptat și meciul nu rămâne blocat la nesfârșit.
  * În etapa 2, upgrade-urile cumpărate cu aur vor adăuga diferențe între jucători.
  */
-export const POWER_PER_MINUTE = 0.1;
+export const POWER_PER_MINUTE = 0.06;
 
 export function armyPower(timeSec: number): number {
   return 1 + POWER_PER_MINUTE * (timeSec / 60);

@@ -1,6 +1,6 @@
 import { BUILDING_DAMAGE_MULT, CASTLE, FIRST_WAVE_DELAY, PROJECTILE_SPEED, WAVE_INTERVAL, WORLD_SIZE, armyPower, GLORY_BONUS, gloryLevel, waveComposition } from './config';
 import { CIV_BY_ID, type CivDef, type CivId, type UnitKind, type UnitStats } from './civs';
-import { CASTLE_POS, NODES, laneTargets, nearestNode, pathLength, shortestPath, type Vec } from './map';
+import { CASTLE_POS, NODES, laneRoute, laneTargets, nearestNode, pathLength, shortestPath, type Vec } from './map';
 import { Rng } from './rng';
 import { SpatialGrid } from './spatial';
 
@@ -108,7 +108,7 @@ export class Simulation {
   private readonly grid = new SpatialGrid<Unit>(WORLD_SIZE, 80);
 
   constructor(opts: SimOptions) {
-    if (opts.civs.length !== 4) throw new Error('Simularea are nevoie de exact 4 civilizații');
+    if (opts.civs.length !== 4) throw new Error('The simulation needs exactly 4 civilizations');
     this.rng = new Rng(opts.seed ?? Date.now());
     this.players = opts.civs.map((civId, slot) => ({
       slot,
@@ -184,7 +184,7 @@ export class Simulation {
     for (const player of this.players) {
       if (!player.castle.alive) continue;
       for (const laneTarget of laneTargets(player.slot)) {
-        const nodes = shortestPath(player.slot, laneTarget);
+        const nodes = laneRoute(player.slot, laneTarget);
         const targetBase = this.players[laneTarget].castle.alive
           ? laneTarget
           : this.closestEnemyBase(player.slot, player.slot);

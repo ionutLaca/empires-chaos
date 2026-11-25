@@ -38,7 +38,7 @@ export class GameScene extends Phaser.Scene {
     for (const p of this.match.sim.players) {
       const c = p.castle;
       const label = this.add
-        .text(c.x, c.y - CASTLE.radius - 30, p.isHuman ? `${p.civ.name} (Tu)` : p.civ.name, {
+        .text(c.x, c.y - CASTLE.radius - 30, p.isHuman ? `${p.civ.name} (You)` : p.civ.name, {
           fontFamily: 'system-ui, sans-serif',
           fontSize: '22px',
           fontStyle: 'bold',
