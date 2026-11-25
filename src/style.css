@@ -121,6 +121,19 @@ button.active {
   box-shadow: 0 0 0 2px var(--civ);
 }
 
+.civ-card.test {
+  border-style: dashed;
+}
+
+.badge {
+  font-size: 0.7rem;
+  vertical-align: middle;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--civ);
+  color: #0d1b1b;
+}
+
 .civ-card h3 {
   margin: 0 0 0.3rem;
 }

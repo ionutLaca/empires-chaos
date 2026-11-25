@@ -50,6 +50,10 @@ Controale: **Space** = pauză, **1 / 2 / 3** = viteză 1x / 2x / 4x.
 | Dacians | Falx Warrior | Dacian Archer | Daune mari corp la corp |
 | Egyptians | Khopesh Warrior | Egyptian Archer | Arcași cu rază și daune mai mari |
 | Vikings | Berserker | Spear Thrower | Viață mare, atac rapid |
+| Atlanteans *(TEST)* | Titan Guard | Storm Caller | Mult prea puternică, doar pentru testare |
+
+**Atlanteans** e o civilizație de test: câștigă un meci în aproximativ un minut (≈12 secunde la viteza 4x),
+ca să poți verifica rapid finalul meciului. O poți alege doar tu; calculatorul nu o primește niciodată.
 
 ## Structura codului
 

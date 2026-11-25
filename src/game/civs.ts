@@ -1,4 +1,4 @@
-export type CivId = 'romani' | 'daci' | 'egipteni' | 'vikingi';
+export type CivId = 'romani' | 'daci' | 'egipteni' | 'vikingi' | 'atlanti';
 export type UnitKind = 'melee' | 'ranged';
 
 export interface UnitStats {
@@ -24,6 +24,8 @@ export interface CivDef {
   bonus: string;
   description: string;
   units: Record<UnitKind, UnitStats>;
+  /** Civilizație doar pentru testare: jucătorul o poate alege, dar calculatorul niciodată. */
+  testOnly?: boolean;
 }
 
 const MELEE_RADIUS = 7;
@@ -79,5 +81,26 @@ export const CIVS: CivDef[] = [
     },
   },
 ];
+
+/**
+ * Civilizație de TEST, intenționat mult prea puternică, ca un meci să se termine în câteva minute.
+ * Utilă când vrem să verificăm rapid finalul meciului, ecranele de victorie etc.
+ */
+CIVS.push({
+  id: 'atlanti',
+  name: 'Atlanteans',
+  color: 0x17c0c0,
+  css: '#17c0c0',
+  bonus: 'TEST ONLY: overpowered, wins in about a minute',
+  description: 'A legendary empire for quick testing. The computer never plays it.',
+  testOnly: true,
+  units: {
+    melee: { name: 'Titan Guard', kind: 'melee', hp: 900, damage: 45, armor: 8, attackCooldown: 0.7, range: 6, speed: 75, radius: MELEE_RADIUS },
+    ranged: { name: 'Storm Caller', kind: 'ranged', hp: 450, damage: 35, armor: 4, attackCooldown: 0.9, range: 200, speed: 75, radius: RANGED_RADIUS },
+  },
+});
+
+/** Civilizațiile adevărate, pe care le poate primi și calculatorul. */
+export const PLAYABLE_CIVS: CivDef[] = CIVS.filter((c) => !c.testOnly);
 
 export const CIV_BY_ID: Record<CivId, CivDef> = Object.fromEntries(CIVS.map((c) => [c.id, c])) as Record<CivId, CivDef>;

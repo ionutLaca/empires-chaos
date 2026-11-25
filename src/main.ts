@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import './style.css';
-import { CIVS, type CivDef, type CivId } from './game/civs';
+import { CIVS, PLAYABLE_CIVS, type CivDef, type CivId } from './game/civs';
 import { GLORY_BONUS, HUMAN_SLOT, KILLS_PER_GLORY, WORLD_SIZE, armyPower, gloryLevel } from './game/config';
 import { Rng } from './game/rng';
 import { Simulation, type SimEvent } from './game/sim';
@@ -23,10 +23,10 @@ function renderMenu(): void {
   cards.innerHTML = '';
   for (const civ of CIVS) {
     const card = document.createElement('button');
-    card.className = 'civ-card';
+    card.className = civ.testOnly ? 'civ-card test' : 'civ-card';
     card.style.setProperty('--civ', civ.css);
     card.innerHTML = `
-      <h3>${civ.name}</h3>
+      <h3>${civ.name}${civ.testOnly ? ' <span class="badge">TEST</span>' : ''}</h3>
       <p class="bonus">${civ.bonus}</p>
       <p>${civ.description}</p>
       <ul>
@@ -54,7 +54,7 @@ function showMenu(): void {
 function startMatch(civId: CivId): void {
   stopMatch();
   const seed = Date.now() >>> 0;
-  const others = new Rng(seed).shuffle(CIVS.filter((c) => c.id !== civId).map((c) => c.id));
+  const others = new Rng(seed).shuffle(PLAYABLE_CIVS.filter((c) => c.id !== civId).map((c) => c.id));
   const civs: CivId[] = [];
   for (let slot = 0; slot < 4; slot++) civs.push(slot === HUMAN_SLOT ? civId : others.shift()!);
 
