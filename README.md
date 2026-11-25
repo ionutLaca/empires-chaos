@@ -1,7 +1,8 @@
 # Empires Chaos
 
 Joc de strategie în browser, inspirat de harta custom *Survival Chaos* din Warcraft 3.
-Patru imperii istorice, câte unul în fiecare colț al hărții, își trimit automat armatele pe culoare.
+Patru imperii istorice, așezate în cruce (câte unul la mijlocul fiecărei laturi a hărții), își trimit automat armatele pe culoare.
+Jocul este în limba engleză.
 Ultimul castel rămas în picioare câștigă.
 
 ## Cum rulezi jocul
@@ -32,9 +33,9 @@ la fiecare push pe `main`, la adresa https://ionutlaca.github.io/empires-chaos/
 
 - Alegi o civilizație; celelalte trei sunt controlate de calculator.
 - La fiecare 18 secunde, fiecare castel trimite un val de unități pe cele 3 culoare ale sale:
-  două pe marginile hărții (spre vecini) și unul prin mijloc (spre baza opusă).
+  două pe marginile hărții, prin colțuri (spre vecini), și unul prin centru (spre baza opusă).
 - Unitățile atacă tot ce întâlnesc; castelele se apără singure.
-- Valurile devin mai mari, iar armatele mai puternice cu timpul (+10% pe minut), așa că până la urmă apărarea cedează.
+- Valurile devin mai mari, iar armatele mai puternice cu timpul (+6% pe minut), așa că până la urmă apărarea cedează.
 - **Glorie:** la fiecare 30 de unități ucise, armata ta primește +4% viață și daune. Cine câștigă luptele începe să împingă.
   (Temporar, până la economia din etapa 2.)
 - Când un castel cade, armata lui dispare, iar unitățile care mergeau spre el pornesc spre următorul inamic.
@@ -43,12 +44,12 @@ Controale: **Space** = pauză, **1 / 2 / 3** = viteză 1x / 2x / 4x.
 
 ## Civilizații
 
-| Civilizație | Corp la corp | Distanță | Specific |
+| Civilizație | Melee | Ranged | Specific |
 |---|---|---|---|
-| Romani | Legionar | Sagittarius | Armură foarte mare |
-| Daci | Războinic cu falx | Arcaș dac | Daune mari corp la corp |
-| Egipteni | Războinic cu khopesh | Arcaș egiptean | Arcași cu rază și daune mai mari |
-| Vikingi | Berserker | Aruncător de sulițe | Viață mare, atac rapid |
+| Romans | Legionary | Sagittarius | Armură foarte mare |
+| Dacians | Falx Warrior | Dacian Archer | Daune mari corp la corp |
+| Egyptians | Khopesh Warrior | Egyptian Archer | Arcași cu rază și daune mai mari |
+| Vikings | Berserker | Spear Thrower | Viață mare, atac rapid |
 
 ## Structura codului
 

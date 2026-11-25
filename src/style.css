@@ -104,6 +104,9 @@ button.active {
 }
 
 .civ-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   text-align: left;
   background: var(--panel);
   border: 2px solid var(--border);
