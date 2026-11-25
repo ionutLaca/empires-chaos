@@ -1,6 +1,6 @@
 // Rulează multe meciuri fără grafică și arată cât de des câștigă fiecare civilizație.
 // Folosire: npx vite-node tests/balance.ts   (sau: npx tsx tests/balance.ts)
-import { CIVS, type CivId } from '../src/game/civs';
+import { PLAYABLE_CIVS, type CivId } from '../src/game/civs';
 import { SIM_DT } from '../src/game/config';
 import { Rng } from '../src/game/rng';
 import { Simulation } from '../src/game/sim';
@@ -11,7 +11,7 @@ const durations: number[] = [];
 let unfinished = 0;
 
 for (let g = 0; g < GAMES; g++) {
-  const civs = new Rng(1000 + g).shuffle(CIVS.map((c) => c.id)) as CivId[];
+  const civs = new Rng(1000 + g).shuffle(PLAYABLE_CIVS.map((c) => c.id)) as CivId[];
   const sim = new Simulation({ civs, humanSlot: 3, seed: 1000 + g });
   for (let i = 0; i < (40 * 60) / SIM_DT && !sim.isOver; i++) sim.step(SIM_DT);
   if (!sim.isOver) {

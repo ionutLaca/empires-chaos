@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CIVS, type CivId } from '../src/game/civs';
+import { PLAYABLE_CIVS, type CivId } from '../src/game/civs';
 import { MAP_MARGIN, SIM_DT, WORLD_SIZE } from '../src/game/config';
 import { CASTLE_POS, CENTER_NODE, LANE_EDGES, laneRoute, laneTargets, shortestPath } from '../src/game/map';
 import { Simulation } from '../src/game/sim';
@@ -73,11 +73,20 @@ describe('simularea', () => {
   }, 120_000);
 
   it('meciurile se termină pentru orice așezare a civilizațiilor', () => {
-    const ids = CIVS.map((c) => c.id);
+    const ids = PLAYABLE_CIVS.map((c) => c.id);
     for (let seed = 1; seed <= 4; seed++) {
       const civs = [...ids.slice(seed % 4), ...ids.slice(0, seed % 4)];
       const sim = runToEnd(civs, seed);
       expect(sim.isOver, `seed ${seed}`).toBe(true);
     }
   }, 300_000);
+
+  it('civilizația de test (Atlanteans) câștigă repede, ca să putem testa finalul meciului', () => {
+    for (let seed = 1; seed <= 3; seed++) {
+      const sim = runToEnd(['romani', 'daci', 'atlanti', 'vikingi'], seed, 10);
+      expect(sim.isOver).toBe(true);
+      expect(sim.players[sim.winner!].civ.id).toBe('atlanti');
+      expect(sim.time).toBeLessThan(5 * 60);
+    }
+  }, 120_000);
 });
